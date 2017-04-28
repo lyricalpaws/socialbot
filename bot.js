@@ -34,7 +34,7 @@ client.on('ready', () => {
         re.setURL("https://twitter.com/statuses/" + t.id_str);
         g.defaultChannel.sendEmbed(re);
 
-        console.log(t);
+  
 
         t.extended_entities.media.forEach(m => {
           let re = new Discord.RichEmbed();
