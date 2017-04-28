@@ -42,7 +42,7 @@ class TwitterReader{
                   json.reverse().forEach(t => {
                     let id = t.id;
                     if(id > u.last){
-                      this.tweetcallback(t.text);
+                      this.tweetcallback(t);
                       u.last = id;
                     }
 
