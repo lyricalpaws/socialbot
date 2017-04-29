@@ -6,12 +6,11 @@ const ddiff = require('return-deep-diff');
 const vtwitter = require('./vtwitter.js');
 const twitreader = vtwitter.TwitterReader(bearer);
 
-let json = null;
+const prefix = "!";
+const name = "socialbot";
+const version = "0.0.1";
 
-
-
-twitreader.addUser("Vatril_Debug");
-twitreader.addUser("lyricalpaws");
+const staffname = "Staff"
 
 let hasinit = false;
 
@@ -34,7 +33,7 @@ client.on('ready', () => {
         re.setURL("https://twitter.com/statuses/" + t.id_str);
         g.defaultChannel.sendEmbed(re);
 
-  
+
 
         t.extended_entities.media.forEach(m => {
           let re = new Discord.RichEmbed();
@@ -46,13 +45,59 @@ client.on('ready', () => {
 
       });
 
+
       twitreader.setOnError(err =>{
-        g.defaultChannel.send(err);
+        g.members.forEach(mem => {
+          let staffrole = g.roles.find("name", staffname);
+          if(mem.roles.has(staffrole.id)){
+              mem.sendMessage(err);
+          }
+        });
       });
 
-      twitreader.tick();
-      setInterval(() => {twitreader.tick();},60*1000);
+      //twitreader.tick();
+      //setInterval(() => {twitreader.tick();},60*1000);
     });
+});
+
+client.on('message', message => {
+
+  let staffrole = message.guild.roles.find("name", staffname);
+
+  if (!message.content.startsWith(prefix) || message.author.bot || !message.member.roles.has(staffrole.id)) return;
+
+
+  if(message.content.startsWith(prefix + "status")){
+
+    let users = ""
+
+    twitreader.getUsers().forEach((u,i) => {
+      users += u.user;
+      if(twitreader.getUsers().length - i > 2){
+        users += ", ";
+      }
+
+      if(twitreader.getUsers().length - i == 2){
+        users += " and ";
+      }
+
+    });
+
+      message.reply(name  + "is currently running verion " + version + "\n\n" +
+      name + " is currently listening for tweets from " + users);
+    }
+
+  if(message.content.startsWith(prefix + "add twitter")){
+    let parts = message.content.split(" ");
+    try{
+    twitreader.addUser(parts[parts.length - 1], mess => {
+      message.reply(mess);
+    });
+  }catch(err){
+
+  }
+  }
+
 });
 
 

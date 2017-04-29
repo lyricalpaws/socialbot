@@ -67,8 +67,24 @@ setOnError(callback){
   this.errorcallback = callback;
 }
 
-  addUser(user){
+  addUser(user, callback){
+    let exists = false;
+    this.users.forEach(u => {
+      if(u.user == user){
+        if(callback){
+          callback(user +" is already on my list!");
+        }
+        exists = true;
+      }
+    });
+    if(!exists){
     this.users.push({"user":user,"last":-1});
+    callback("added " + user);
+  }
+  }
+
+  getUsers(){
+    return this.users;
   }
 
   getTweets(user, callback){
