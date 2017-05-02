@@ -6,6 +6,8 @@ const ddiff = require('return-deep-diff');
 const vtwitter = require('./vtwitter.js');
 const twitreader = vtwitter.TwitterReader(bearer);
 
+twitreader.setOnError(err =>{console.error(err);});
+
 const prefix = "!";
 const name = "socialbot";
 const version = "0.0.1";

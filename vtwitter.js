@@ -8,18 +8,27 @@ module.exports = {
   }
 };
 
+let twitterlist = null;
+
 class TwitterReader{
 
   constructor(bearerID){
     this.bearerID = bearerID;
-    this.twitterlist = null;
     this.users = new Array();
     this.tick();
 
 
-    fs.readFile("/twitterIds", "utf8", (err,data) => {
+    fs.readFile("twitterIds.json", "utf8", (err,data) => {
       if(data){
           twitterlist = JSON.parse(data);
+          try{twitterlist.forEach(u => {
+            this.addUser(u, (mess) => {console.log(mess);});
+          });
+        }catch(err){
+          if(this.errorcallback){
+            this.errorcallback(err);
+          }
+        }
       }
     });
 
@@ -79,7 +88,11 @@ setOnError(callback){
     });
     if(!exists){
     this.users.push({"user":user,"last":-1});
-    callback("added " + user);
+    let tusers = new Array();
+    for(let us of this.users){
+    tusers.push(us.user);
+  }
+    fs.writeFile("twitterIds.json",JSON.stringify(tusers),"utf8",() => {callback("added " + user)});
   }
   }
 
