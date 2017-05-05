@@ -9,8 +9,8 @@ const twitreader = vtwitter.TwitterReader(bearer);
 twitreader.setOnError(err =>{console.error(err);});
 
 const prefix = "!";
-const name = "socialbot";
-const version = "0.0.1";
+const name = "Socialbot";
+const version = "0.0.5";
 
 const staffname = "Staff"
 
@@ -32,6 +32,9 @@ client.on('ready', () => {
       });
 
       twitreader.setOnTweet(t =>{
+
+        try{
+
         let re = new Discord.RichEmbed();
         re.setThumbnail(t.user.profile_image_url);
         re.setTitle(t.user.name);
@@ -44,27 +47,37 @@ client.on('ready', () => {
 
 
 
-
+        if(t.extended_entities){
         t.extended_entities.media.forEach(m => {
           let re = new Discord.RichEmbed();
           re.setColor(0x0084b4);
           re.setImage(m.media_url);
           channels.forEach(gc => {
+
             gc.sendEmbed(re);
+
           });
         });
 
+      }
+      }catch(err){
+        console.error(err);
+      }
 
       });
 
 
       twitreader.setOnError(err =>{
+        try{
         g.members.forEach(mem => {
           let staffrole = g.roles.find("name", staffname);
           if(mem.roles.has(staffrole.id)){
               mem.sendMessage(err);
           }
         });
+      }catch(err){
+        console.error(err);
+      }
       });
 
       twitreader.tick();
@@ -84,6 +97,7 @@ client.on('message', message => {
     let users = ""
 
     twitreader.getUsers().forEach((u,i) => {
+      try{
       users += u.user;
       if(twitreader.getUsers().length - i > 2){
         users += ", ";
@@ -92,10 +106,13 @@ client.on('message', message => {
       if(twitreader.getUsers().length - i == 2){
         users += " and ";
       }
+    }catch(err){
+      console.error(err);
+    }
 
     });
 
-      message.reply(name  + "is currently running verion " + version + "\n\n" +
+      message.reply(name  + " is currently running verion " + version + "\n\n" +
       name + " is currently listening for tweets from " + users);
     }
 
