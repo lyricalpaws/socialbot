@@ -15,7 +15,7 @@ const version = "0.0.1";
 const staffname = "Staff"
 
 let hasinit = false;
-
+let channels = new Array();
 
 client.on('ready', () => {
   if(hasinit){
@@ -25,6 +25,12 @@ client.on('ready', () => {
     console.log('I\'m Online\nI\'m Online');
     client.guilds.forEach(g => {
 
+      g.channels.forEach( gc => {
+        if(gc.name == "social"){
+          channels.push(gc);
+        }
+      });
+
       twitreader.setOnTweet(t =>{
         let re = new Discord.RichEmbed();
         re.setThumbnail(t.user.profile_image_url);
@@ -32,7 +38,10 @@ client.on('ready', () => {
         re.addField("Tweeted: " , t.text);
         re.setColor(0x0084b4);
         re.setURL("https://twitter.com/statuses/" + t.id_str);
-        g.defaultChannel.sendEmbed(re);
+        channels.forEach(gc => {
+          gc.sendEmbed(re);
+        });
+
 
 
 
@@ -40,7 +49,9 @@ client.on('ready', () => {
           let re = new Discord.RichEmbed();
           re.setColor(0x0084b4);
           re.setImage(m.media_url);
-          g.defaultChannel.sendEmbed(re);
+          channels.forEach(gc => {
+            gc.sendEmbed(re);
+          });
         });
 
 
