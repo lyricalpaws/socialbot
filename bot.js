@@ -57,8 +57,8 @@ client.on('ready', () => {
         });
       });
 
-      //twitreader.tick();
-      //setInterval(() => {twitreader.tick();},60*1000);
+      twitreader.tick();
+      setInterval(() => {twitreader.tick();},60*10000);
     });
 });
 
