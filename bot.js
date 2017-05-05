@@ -24,7 +24,6 @@ client.on('ready', () => {
   hasinit = true;
     console.log('I\'m Online\nI\'m Online');
     client.guilds.forEach(g => {
-      g.defaultChannel.send(`hello`);
 
       twitreader.setOnTweet(t =>{
         let re = new Discord.RichEmbed();
