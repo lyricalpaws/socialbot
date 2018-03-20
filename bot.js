@@ -22,7 +22,7 @@ client.on('ready', () => {
     return;
   }
   hasinit = true;
-    console.log('I\'m Online\nI\'m Online');
+    console.log('I\'m Functional');
     client.guilds.forEach(g => {
 
       g.channels.forEach( gc => {
@@ -39,7 +39,7 @@ client.on('ready', () => {
         re.setThumbnail(t.user.profile_image_url);
         re.setTitle(t.user.name);
         re.addField("Tweeted: " , t.text);
-        re.setColor(0x0084b4);
+        re.setColor('#16b1ff');
         re.setURL("https://twitter.com/statuses/" + t.id_str);
         channels.forEach(gc => {
           gc.sendEmbed(re);
@@ -116,7 +116,7 @@ client.on('message', message => {
       name + " is currently listening for tweets from " + users);
     }
 
-  if(message.content.startsWith(prefix + "add twitter")){
+  if(message.content.startsWith(prefix + "add")){
     let parts = message.content.split(" ");
     try{
     twitreader.addUser(parts[parts.length - 1], mess => {
