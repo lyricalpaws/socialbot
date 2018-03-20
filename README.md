@@ -1,2 +1,2 @@
 # socialbot
-A bot that sends social updates to Discord
+A bot that sends tweets to Discord from specific twitter users
