@@ -9,7 +9,7 @@
   "author": "vatril",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^11.1.0",
+    "discord.js": "^12.5.0",
     "return-deep-diff": "^0.2.7",
     "snekfetch": "^3.1.3"
   }
